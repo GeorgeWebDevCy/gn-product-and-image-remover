@@ -2,12 +2,15 @@
 Author URI: https://www.georgenicolaou.me/
 Plugin URI: https://www.georgenicolaou.me/plugins/gn-product-and-image-remover
 Donate link: 
-Contributors: 
-Tags: 
+Contributors: orionaselite
+Tags: woocommerce,images,remove
 Requires at least: 
-Tested up to: 
+Tested up to: 6.2
 Requires PHP: 
 Stable tag: 1.0.0
+License: GPLv2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
 
 Allows you to delete Woocommerce images after deleting product unless the image is used in another product
 
