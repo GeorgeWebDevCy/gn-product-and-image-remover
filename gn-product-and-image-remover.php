@@ -69,81 +69,87 @@ require_once GNCYPRODUCTREMOVER_PLUGIN_DIR . 'core/class-gn-product-and-image-re
  * @since   1.0.0
  * @return  object|Gn_Product_And_Image_Remover
  */
-function GNCYPRODUCTREMOVER()
-{
-	return Gn_Product_And_Image_Remover::instance();
-}
 
 // Check if WooCommerce is active
-function gncy_product_image_remover_check_for_woocommerce()
-{
-	if (!class_exists('woocommerce')) {
-		deactivate_plugins(plugin_basename(__FILE__));
-		wp_die('Sorry, but this plugin requires WooCommerce to be installed and active. Please install WooCommerce and try again.');
-	}
+function gncy_product_image_remover_check_for_woocommerce() {
+    if (!class_exists('woocommerce')) {
+        deactivate_plugins(plugin_basename(__FILE__));
+        wp_die('Sorry, but this plugin requires WooCommerce to be installed and active. Please install WooCommerce and try again.');
+    }
 }
 register_activation_hook(__FILE__, 'gncy_product_image_remover_check_for_woocommerce');
 
-function gncy_product_remover_delete_product_images($post_id)
-{
-	// Check if user has the capability to delete products
-	if (!current_user_can('delete_products')) {
-		return;
-	}
-	$product = wc_get_product($post_id);
+// Load the main class for the core functionality
+require_once plugin_dir_path(__FILE__) . 'core/class-gn-product-and-image-remover.php';
 
-	if (!$product) {
-		return;
-	}
-
-	$featured_image_id = $product->get_image_id();
-	$image_galleries_id = $product->get_gallery_image_ids();
-
-	if (!empty($featured_image_id)) {
-		$is_featured_image_used = gncy_product_remover_is_image_used($featured_image_id, $post_id);
-		if (!$is_featured_image_used) {
-			wp_delete_attachment($featured_image_id, true);
-		}
-	}
-
-	if (!empty($image_galleries_id)) {
-		foreach ($image_galleries_id as $single_image_id) {
-			$is_image_used = gncy_product_remover_is_image_used($single_image_id, $post_id);
-			if (!$is_image_used) {
-				wp_delete_attachment($single_image_id, true);
-			}
-		}
-	}
+/**
+ * The main function to load the only instance
+ * of our master class.
+ *
+ * @return object|Gn_Product_And_Image_Remover
+ */
+function GNCYPRODUCTREMOVER() {
+    return Gn_Product_And_Image_Remover::instance();
 }
 
-function gncy_product_remover_is_image_used($image_id, $current_product_id)
-{
-	$query = new WP_Query(
-		array(
-			'post_type' => 'product',
-			'post_status' => 'publish',
-			'meta_query' => array(
-				'relation' => 'OR',
-				array(
-					'key' => '_thumbnail_id',
-					'value' => $image_id,
-					'compare' => '='
-				),
-				array(
-					'key' => '_product_image_gallery',
-					'value' => '"' . $image_id . '"',
-					'compare' => 'LIKE'
-				)
-			),
-			'post__not_in' => array($current_product_id),
-			'fields' => 'ids',
-			'posts_per_page' => -1
-		)
-	);
+add_action('before_delete_post', 'gncy_product_remover_delete_product_images', 10, 1);
 
-	return ($query->have_posts());
+function gncy_product_remover_delete_product_images($post_id) {
+    if ('product' !== get_post_type($post_id)) {
+        return; // Only process WooCommerce products
+    }
+
+    $product = wc_get_product($post_id);
+
+    if (!$product) {
+        return;
+    }
+
+    $featured_image_id = $product->get_image_id();
+    $image_galleries_id = $product->get_gallery_image_ids();
+
+    if (!empty($featured_image_id)) {
+        $is_featured_image_used = gncy_product_remover_is_image_used($featured_image_id, $post_id);
+        if (!$is_featured_image_used) {
+            wp_delete_attachment($featured_image_id, true);
+        }
+    }
+
+    if (!empty($image_galleries_id)) {
+        foreach ($image_galleries_id as $single_image_id) {
+            $is_image_used = gncy_product_remover_is_image_used($single_image_id, $post_id);
+            if (!$is_image_used) {
+                wp_delete_attachment($single_image_id, true);
+            }
+        }
+    }
+}
+
+function gncy_product_remover_is_image_used($image_id, $current_product_id) {
+    $query = new WP_Query(
+        array(
+            'post_type' => 'product',
+            'post_status' => 'publish',
+            'meta_query' => array(
+                'relation' => 'OR',
+                array(
+                    'key' => '_thumbnail_id',
+                    'value' => $image_id,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => '_product_image_gallery',
+                    'value' => $image_id,
+                    'compare' => 'LIKE'
+                )
+            ),
+            'post__not_in' => array($current_product_id),
+            'fields' => 'ids',
+            'posts_per_page' => -1
+        )
+    );
+
+    return ($query->have_posts());
 }
 
 GNCYPRODUCTREMOVER();
-// Automatically Delete Woocommerce Images After Deleting a Product if the images are not used with other products
-add_action('before_delete_post', 'gncy_remover_delete_product_images', 10, 1);
