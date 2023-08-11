@@ -2,7 +2,7 @@
 /**
  * GN Product and Image Remover
  *
- * @package       GNPRODUCTA
+ * @package      GNCYPRODUCTREMOVER
  * @author        George Nicolaou
  * @version       1.0.0
  *
@@ -31,7 +31,7 @@ if (!defined('ABSPATH'))
  * that are used by WordPress to differenciate the plugin and register it properly.
  * It also contains further PHPDocs parameter for a better documentation
  * 
- * The function GNPRODUCTA() is the main function that you will be able to 
+ * The function GNCYPRODUCTA() is the main function that you will be able to 
  * use throughout your plugin to extend the logic. Further information
  * about that is available within the sub classes.
  * 
@@ -39,27 +39,27 @@ if (!defined('ABSPATH'))
  */
 
 // Plugin name
-define('GNPRODUCTA_NAME', 'GN Product and Image Remover');
+//define('GNCYPRODUCTREMOVER_NAME', 'GN Product and Image Remover');
 
 // Plugin version
-define('GNPRODUCTA_VERSION', '1.0.0');
+define('GNCYPRODUCTREMOVER_VERSION', '1.0.0');
 
 // Plugin Root File
-define('GNPRODUCTA_PLUGIN_FILE', __FILE__);
+define('GNCYPRODUCTREMOVER_PLUGIN_FILE', __FILE__);
 
 // Plugin base
-define('GNPRODUCTA_PLUGIN_BASE', plugin_basename(GNPRODUCTA_PLUGIN_FILE));
+define('GNCYPRODUCTREMOVER_PLUGIN_BASE', plugin_basename(GNCYPRODUCTREMOVER_PLUGIN_FILE));
 
 // Plugin Folder Path
-define('GNPRODUCTA_PLUGIN_DIR', plugin_dir_path(GNPRODUCTA_PLUGIN_FILE));
+define('GNCYPRODUCTREMOVER_PLUGIN_DIR', plugin_dir_path(GNCYPRODUCTREMOVER_PLUGIN_FILE));
 
 // Plugin Folder URL
-define('GNPRODUCTA_PLUGIN_URL', plugin_dir_url(GNPRODUCTA_PLUGIN_FILE));
+define('GNCYPRODUCTREMOVER_PLUGIN_URL', plugin_dir_url(GNCYPRODUCTREMOVER_PLUGIN_FILE));
 
 /**
  * Load the main class for the core functionality
  */
-require_once GNPRODUCTA_PLUGIN_DIR . 'core/class-gn-product-and-image-remover.php';
+require_once GNCYPRODUCTREMOVER_PLUGIN_DIR . 'core/class-gn-product-and-image-remover.php';
 
 /**
  * The main function to load the only instance
@@ -75,16 +75,16 @@ function GNPRODUCTA()
 }
 
 // Check if WooCommerce is active
-function gn_product_image_remover_check_for_woocommerce()
+function gncy_product_image_remover_check_for_woocommerce()
 {
 	if (!class_exists('woocommerce')) {
 		deactivate_plugins(plugin_basename(__FILE__));
 		wp_die('Sorry, but this plugin requires WooCommerce to be installed and active. Please install WooCommerce and try again.');
 	}
 }
-register_activation_hook(__FILE__, 'gn_product_image_remover_check_for_woocommerce');
+register_activation_hook(__FILE__, 'gncy_product_image_remover_check_for_woocommerce');
 
-function gn_product_remover_delete_product_images($post_id)
+function gncy_product_remover_delete_product_images($post_id)
 {
 	// Check if user has the capability to delete products
 	if (!current_user_can('delete_products')) {
@@ -100,7 +100,7 @@ function gn_product_remover_delete_product_images($post_id)
 	$image_galleries_id = $product->get_gallery_image_ids();
 
 	if (!empty($featured_image_id)) {
-		$is_featured_image_used = gn_product_remover_is_image_used($featured_image_id, $post_id);
+		$is_featured_image_used = gncy_product_remover_is_image_used($featured_image_id, $post_id);
 		if (!$is_featured_image_used) {
 			wp_delete_attachment($featured_image_id, true);
 		}
@@ -108,7 +108,7 @@ function gn_product_remover_delete_product_images($post_id)
 
 	if (!empty($image_galleries_id)) {
 		foreach ($image_galleries_id as $single_image_id) {
-			$is_image_used = gn_product_remover_is_image_used($single_image_id, $post_id);
+			$is_image_used = gncy_product_remover_is_image_used($single_image_id, $post_id);
 			if (!$is_image_used) {
 				wp_delete_attachment($single_image_id, true);
 			}
@@ -116,7 +116,7 @@ function gn_product_remover_delete_product_images($post_id)
 	}
 }
 
-function gn_product_remover_is_image_used($image_id, $current_product_id)
+function gncy_product_remover_is_image_used($image_id, $current_product_id)
 {
 	$query = new WP_Query(
 		array(
@@ -144,6 +144,6 @@ function gn_product_remover_is_image_used($image_id, $current_product_id)
 	return ($query->have_posts());
 }
 
-GNPRODUCTA();
+GNCYPRODUCTA();
 // Automatically Delete Woocommerce Images After Deleting a Product if the images are not used with other products
-add_action('before_delete_post', 'gn_product_remover_delete_product_images', 10, 1);
+add_action('before_delete_post', 'gncy_remover_delete_product_images', 10, 1);

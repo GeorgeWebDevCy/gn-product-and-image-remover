@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * This class contains repetitive functions that
  * are used globally within the plugin.
  *
- * @package		GNPRODUCTA
+ * @package      GNCYPRODUCTREMOVER
  * @subpackage	Classes/Gn_Product_And_Image_Remover_Helpers
  * @author		George Nicolaou
  * @since		1.0.0
@@ -46,7 +46,8 @@ class Gn_Product_And_Image_Remover_Helpers{
 	 * @return	void
 	 */
 	 public function output_text( $text = '' ){
-		 echo $text;
+		echo esc_html( $text );
+
 	 }
 
 	 /**

@@ -23,7 +23,7 @@ if ( ! class_exists( 'Gn_Product_And_Image_Remover' ) ) :
 	/**
 	 * Main Gn_Product_And_Image_Remover Class.
 	 *
-	 * @package		GNPRODUCTA
+	 * @package      GNCYPRODUCTREMOVER
 	 * @subpackage	Classes/Gn_Product_And_Image_Remover
 	 * @since		1.0.0
 	 * @author		George Nicolaou
@@ -107,7 +107,7 @@ if ( ! class_exists( 'Gn_Product_And_Image_Remover' ) ) :
 				 * Fire a custom action to allow dependencies
 				 * after the successful plugin setup
 				 */
-				do_action( 'GNPRODUCTA/plugin_loaded' );
+				do_action( 'GNCYPRODUCTA/plugin_loaded' );
 			}
 
 			return self::$instance;
@@ -121,10 +121,10 @@ if ( ! class_exists( 'Gn_Product_And_Image_Remover' ) ) :
 		 * @return  void
 		 */
 		private function includes() {
-			require_once GNPRODUCTA_PLUGIN_DIR . 'core/includes/classes/class-gn-product-and-image-remover-helpers.php';
-			require_once GNPRODUCTA_PLUGIN_DIR . 'core/includes/classes/class-gn-product-and-image-remover-settings.php';
+			require_once GNCYPRODUCTREMOVER_PLUGIN_DIR . 'core/includes/classes/class-gn-product-and-image-remover-helpers.php';
+			require_once GNCYPRODUCTREMOVER_PLUGIN_DIR . 'core/includes/classes/class-gn-product-and-image-remover-settings.php';
 
-			require_once GNPRODUCTA_PLUGIN_DIR . 'core/includes/classes/class-gn-product-and-image-remover-run.php';
+			require_once GNCYPRODUCTREMOVER_PLUGIN_DIR . 'core/includes/classes/class-gn-product-and-image-remover-run.php';
 		}
 
 		/**
@@ -146,7 +146,8 @@ if ( ! class_exists( 'Gn_Product_And_Image_Remover' ) ) :
 		 * @return  void
 		 */
 		public function load_textdomain() {
-			load_plugin_textdomain( 'gn-product-and-image-remover', FALSE, dirname( plugin_basename( GNPRODUCTA_PLUGIN_FILE ) ) . '/languages/' );
+			load_plugin_textdomain( 'gn-product-and-image-remover', '', dirname( plugin_basename( GNPRODUCTA_PLUGIN_FILE ) ) . '/languages/' );
+
 		}
 
 	}

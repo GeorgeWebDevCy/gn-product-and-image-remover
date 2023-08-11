@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * This class contains all of the plugin settings.
  * Here you can configure the whole plugin data.
  *
- * @package		GNPRODUCTA
+ * @package      GNCYPRODUCTREMOVER
  * @subpackage	Classes/Gn_Product_And_Image_Remover_Settings
  * @author		George Nicolaou
  * @since		1.0.0
@@ -50,7 +50,7 @@ class Gn_Product_And_Image_Remover_Settings{
 	 */
 	function __construct(){
 
-		$this->plugin_name = GNPRODUCTA_NAME;
+		$this->plugin_name = GNCYPRODUCTREMOVER_NAME;
 	}
 
 	/**

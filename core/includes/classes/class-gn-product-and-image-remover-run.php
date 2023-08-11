@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Thats where we bring the plugin to life
  *
- * @package		GNPRODUCTA
+ * @package      GNCYPRODUCTREMOVER
  * @subpackage	Classes/Gn_Product_And_Image_Remover_Run
  * @author		George Nicolaou
  * @since		1.0.0
@@ -92,10 +92,10 @@ class Gn_Product_And_Image_Remover_Run{
 	 * @return	void
 	 */
 	public function enqueue_backend_scripts_and_styles() {
-		wp_enqueue_style( 'gnproducta-backend-styles', GNPRODUCTA_PLUGIN_URL . 'core/includes/assets/css/backend-styles.css', array(), GNPRODUCTA_VERSION, 'all' );
-		wp_enqueue_script( 'gnproducta-backend-scripts', GNPRODUCTA_PLUGIN_URL . 'core/includes/assets/js/backend-scripts.js', array(), GNPRODUCTA_VERSION, false );
+		wp_enqueue_style( 'gnproducta-backend-styles', GNCYPRODUCTREMOVER_PLUGIN_URL . 'core/includes/assets/css/backend-styles.css', array(), GNCYPRODUCTREMOVER_VERSION, 'all' );
+		wp_enqueue_script( 'gnproducta-backend-scripts', GNCYPRODUCTREMOVER_PLUGIN_URL . 'core/includes/assets/js/backend-scripts.js', array(), GNCYPRODUCTREMOVER_VERSION, false );
 		wp_localize_script( 'gnproducta-backend-scripts', 'gnproducta', array(
-			'plugin_name'   	=> __( GNPRODUCTA_NAME, 'gn-product-and-image-remover' ),
+			'plugin_name'   	=> __( 'GN Product and Image Remover', 'gn-product-and-image-remover' ),
 		));
 	}
 
