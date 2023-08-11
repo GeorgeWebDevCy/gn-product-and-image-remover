@@ -107,7 +107,7 @@ if ( ! class_exists( 'Gn_Product_And_Image_Remover' ) ) :
 				 * Fire a custom action to allow dependencies
 				 * after the successful plugin setup
 				 */
-				do_action( 'GNCYPRODUCTA/plugin_loaded' );
+				do_action( 'GNCYPRODUCTREMOVER/plugin_loaded' );
 			}
 
 			return self::$instance;
@@ -146,7 +146,7 @@ if ( ! class_exists( 'Gn_Product_And_Image_Remover' ) ) :
 		 * @return  void
 		 */
 		public function load_textdomain() {
-			load_plugin_textdomain( 'gn-product-and-image-remover', '', dirname( plugin_basename( GNPRODUCTA_PLUGIN_FILE ) ) . '/languages/' );
+			load_plugin_textdomain( 'gn-product-and-image-remover', '', dirname( plugin_basename( GNCYPRODUCTREMOVER_PLUGIN_FILE ) ) . '/languages/' );
 
 		}
 

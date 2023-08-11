@@ -39,7 +39,7 @@ if (!defined('ABSPATH'))
  */
 
 // Plugin name
-//define('GNCYPRODUCTREMOVER_NAME', 'GN Product and Image Remover');
+define('GNCYPRODUCTREMOVER_NAME', 'GN Product and Image Remover');
 
 // Plugin version
 define('GNCYPRODUCTREMOVER_VERSION', '1.0.0');
@@ -69,7 +69,7 @@ require_once GNCYPRODUCTREMOVER_PLUGIN_DIR . 'core/class-gn-product-and-image-re
  * @since   1.0.0
  * @return  object|Gn_Product_And_Image_Remover
  */
-function GNPRODUCTA()
+function GNCYPRODUCTREMOVER()
 {
 	return Gn_Product_And_Image_Remover::instance();
 }
@@ -144,6 +144,6 @@ function gncy_product_remover_is_image_used($image_id, $current_product_id)
 	return ($query->have_posts());
 }
 
-GNCYPRODUCTA();
+GNCYPRODUCTREMOVER();
 // Automatically Delete Woocommerce Images After Deleting a Product if the images are not used with other products
 add_action('before_delete_post', 'gncy_remover_delete_product_images', 10, 1);
