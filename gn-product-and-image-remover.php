@@ -1,6 +1,6 @@
 <?php
 /**
- * GN Product and Image Remover
+ * GN Product and Image Remover1
  *
  * @package      GNCYPRODUCTREMOVER
  * @author        George Nicolaou
